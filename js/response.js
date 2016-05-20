@@ -1,7 +1,7 @@
 /*
   @Autor: Jerry Ramone (https://codigojerry.blogspot.com/)
   @Version: 1.0
-  @Web: 
+  @Web: https://github.com/jerrycode/taringa
 */
 
 var taringa=function(url, cfunc, div) {

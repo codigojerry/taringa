@@ -1,4 +1,4 @@
-# taringa
+# Mi Taringa!
 
 Aplicación hecha para estudiar la API de Taringa!
 
