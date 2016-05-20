@@ -27,10 +27,10 @@ var traer_post=function(xhttp,div){
     var cad='';
     var re_url='http://api.taringa.net/post/view/';//link para ver los post individualmente
     for (var i = 0 ; i < r.length; i++) {
-        cad=cad+"<div id='id_"+r[i].id+"'><img width='30px' height='30px' src='"+r[i].images[0].url+"' /> <span style='color:gray;'>"+r[i].category_name+"</span> | <span class='titulo' onclick='taringa(\""+re_url+r[i].id+"\",abrir_post,\"post\")'>"+r[i].title+"</span> <span class='owner' onclick='taringa(\"http://api.taringa.net/user/nick/view/"+r[i].owner.nick+"\",traer_user,\"post\")'>@"+r[i].owner.nick+"</span></div>";
+        cad=cad+"<div><img width='30px' height='30px' src='"+r[i].images[0].url+"' /> <span style='color:gray;'>"+r[i].category_name+"</span> | <span class='titulo' onclick='taringa(\""+re_url+r[i].id+"\",abrir_post,\"post\")'>"+r[i].title+"</span> <span class='owner' onclick='taringa(\"http://api.taringa.net/user/nick/view/"+r[i].owner.nick+"\",traer_user,\"post\")'>@"+r[i].owner.nick+"</span></div>";
     };
 
-    document.getElementById(div).innerHTML=cad;
+    document.getElementById(div).innerHTML='<div id="contenedor">'+cad+'</div>';
 }
 
 
@@ -117,32 +117,42 @@ var traer_com=function(id_post,num_com,page){
 
 }
 
+var cerrar_select=function(){
+  document.getElementById('div_select_tiempo').style.display='none';
+}
+
 var mostrar_intervalo=function(tipo){
+  document.getElementById('div_select_tiempo').style.display='inline';
+  document.getElementById('post').innerHTML='&nbsp;';//borro lo que tenga post
+
   switch(tipo){
     case 'post_populares':
-      document.getElementById('select_tiempo').setAttribute='onchange="obtener_datos(\'post_populares\')"';
+      document.getElementById('select_intervalo').setAttribute('onchange','obtener_datos("post_populares")');
     break;
-    case 'shouts....':
-      document.getElementById('select_tiempo').setAttribute='onchange="obtener_datos(\'shouts...\')"';
+    case 'shouts_populares':
+      document.getElementById('select_intervalo').setAttribute('onchange','obtener_datos("shouts_populares")');
     break;
   }
-
-  document.getElementById('select_tiempo').style.display='inline';
-  document.getElementById('post').innerHTML='Seleccione un periodo de tiempo';//borro lo que tenga post
   
 }
 
 var obtener_datos=function(tipo){
+    var post=document.getElementById('post');
+    var intervalo=document.getElementById('select_intervalo').value;//capturo el valor del select
     switch(tipo){
     case 'post_populares':
-      var intervalo=document.getElementById('select_tiempo').value;
       if(intervalo!=''){
+        post.innerHTML='Cargando....';
         taringa('http://api.taringa.net/post/populars/view/'+intervalo+'?count=50',traer_post,'post');
-      }else{ alert('Seleccione un valor'); }
+      }else{ alert('Seleccione un valor'); post.innerHTML='Selecciona un valor';}
       
     break;
 
-    case 'shouts.....':
+    case 'shouts_populares':
+      if(intervalo!=''){
+        post.innerHTML='Cargando....';
+        taringa('http://api.taringa.net/shout/populars/view/'+intervalo+'?count=50&sort_by=positive',traer_shout,'post');
+      }else{ alert('Seleccione un valor'); post.innerHTML='Selecciona un valor'; }
     break;
 
   }

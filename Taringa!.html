@@ -25,7 +25,7 @@
     <a class="active" href="#">Mi</a>
     <div class="dropdown-content">
       <a href="#"><span onclick="taringa('http://api.taringa.net/shout/trends/view/12h?count=50',traer_shout,'post')">Shouts destacados</span></a>
-      <a href="#"><span onclick="taringa('http://api.taringa.net/shout/populars/view/today?count=50',traer_shout,'post')">Shouts populares</span></a>
+      <a href="#"><span onclick="mostrar_intervalo('shouts_populares')">Shouts populares</span></a>
     </div>    
 
   </li>
@@ -54,9 +54,11 @@
   <b>Ultimos shouts</b>
 </div>
 
-<div id="select_tiempo" style="width:55%;display:none;background-color:yellow;float:left;">
+<div id="div_select_tiempo" style="width:54%;display:none;background-color:#DCDCDC;float:left;padding-bottom:10px;padding-left:10px;">
 
-  <select id="intervalo"><!--++++estos intervalos de tiempo son los mismos para post destacados y shouts....+++++-->
+  <div style="text-align:right;cursor:pointer;"><span title="Cerrar este cuadro" onclick="cerrar_select()">x</span></div>
+  <small>Seleccione un intervalo de tiempo para ver los post o shouts populares de esa época:</small> 
+  <select id="select_intervalo"><!--estos intervalos de tiempo son los mismos para post destacados y shouts....-->
     <option value="">Seleccione</option>
     <option value="all">Todo</option>
     <option value="recent">Reciente</option>
@@ -76,6 +78,7 @@
     <option value="last-year">Ultimo año</option>
     <option value="previous-year">Previo año</option>
   </select>
+  
 
 </div>
 <div id="post" style="width:55%;float:left;">Cargando...</div>
