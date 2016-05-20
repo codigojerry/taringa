@@ -24,7 +24,7 @@
   <li class="dropdown">
     <a class="active" href="#">Mi</a>
     <div class="dropdown-content">
-      <a href="#"><span onclick="taringa('http://api.taringa.net/shout/trends/view/12h?count=50',traer_shout,'post')">Shouts destacados</span></a>
+      <a href="#"><span onclick="mostrar_intervalo('shouts_destacados')">Shouts destacados</span></a>
       <a href="#"><span onclick="mostrar_intervalo('shouts_populares')">Shouts populares</span></a>
     </div>    
 
@@ -44,9 +44,6 @@
 
 <div id="tendencia" style="width:100%;background-color:#FFFFFF;float:left;"></div>
 
-<!--<div id="shout_destacados" style="width:25%;float:left;font-size:10px;"></div>
-<div id="shout_populares" style="width:25%;float:left;font-size:10px;"></div>-->
-
 <div style="width:55%;height:30px;float:left;text-align:center;font-size:12px;margin-top:5px;">
   <button type="button" onclick="taringa('http://api.taringa.net/post/recent/view/all/50',traer_post,'post')">Ver ultimos post</button>
 </div>
@@ -54,9 +51,22 @@
   <b>Ultimos shouts</b>
 </div>
 
-<div id="div_select_tiempo" style="width:54%;display:none;background-color:#DCDCDC;float:left;padding-bottom:10px;padding-left:10px;">
+<div id="div_sel_int_shout" style="border-radius:19px 19px 19px 19px;width:54%;display:none;background-color:#DCDCDC;float:left;padding-bottom:10px;padding-left:10px;">
+  <div style="text-align:right;cursor:pointer;"><span style="color:red;" title="Cerrar este cuadro" onclick="cerrar_select('destacados')"><b>x</b>&nbsp;</span></div>
+  <small>Seleccione un intervalo para ver shouts destacados de ese tiempo:</small> 
+  <select id="sel_interval_shout_dest" onchange="obtener_datos('shouts_destacados')">
+    <option value="">Seleccione</option>
+    <option value="15m">15 minutos</option>
+    <option value="1h">1 hora</option>
+    <option value="3h">3 horas</option>
+    <option value="6h">6 horas</option>
+    <option value="12h">12 horas</option>
+  </select>  
+</div>
 
-  <div style="text-align:right;cursor:pointer;"><span title="Cerrar este cuadro" onclick="cerrar_select()">x</span></div>
+<div id="div_select_tiempo" style="border-radius:19px 19px 19px 19px;width:54%;display:none;background-color:#DCDCDC;float:left;padding-bottom:10px;padding-left:10px;">
+
+  <div style="text-align:right;cursor:pointer;"><span style="color:red;" title="Cerrar este cuadro" onclick="cerrar_select('populares')"><b>x</b>&nbsp;</span></div>
   <small>Seleccione un intervalo de tiempo para ver los post o shouts populares de esa época:</small> 
   <select id="select_intervalo"><!--estos intervalos de tiempo son los mismos para post destacados y shouts....-->
     <option value="">Seleccione</option>
@@ -78,7 +88,6 @@
     <option value="last-year">Ultimo año</option>
     <option value="previous-year">Previo año</option>
   </select>
-  
 
 </div>
 <div id="post" style="width:55%;float:left;">Cargando...</div>

@@ -117,12 +117,28 @@ var traer_com=function(id_post,num_com,page){
 
 }
 
-var cerrar_select=function(){
-  document.getElementById('div_select_tiempo').style.display='none';
+var cerrar_select=function(tipo){
+  switch(tipo){
+    case 'populares':
+      document.getElementById('div_select_tiempo').style.display='none';
+    break;
+    case 'destacados':
+      document.getElementById('div_sel_int_shout').style.display='none';
+    break;    
+  } 
+  
 }
 
 var mostrar_intervalo=function(tipo){
-  document.getElementById('div_select_tiempo').style.display='inline';
+
+  if(tipo=='shouts_destacados'){
+    document.getElementById('div_sel_int_shout').style.display='inline';
+    document.getElementById('div_select_tiempo').style.display='none';//si esta abierto lo oculto
+  }else{
+    document.getElementById('div_select_tiempo').style.display='inline';  
+    document.getElementById('div_sel_int_shout').style.display='none';//si esta abierto lo oculto
+  }
+  
   document.getElementById('post').innerHTML='&nbsp;';//borro lo que tenga post
 
   switch(tipo){
@@ -138,7 +154,11 @@ var mostrar_intervalo=function(tipo){
 
 var obtener_datos=function(tipo){
     var post=document.getElementById('post');
-    var intervalo=document.getElementById('select_intervalo').value;//capturo el valor del select
+    var intervalo='';
+    if(tipo=='shouts_destacados'){//capturo el valor del select
+      intervalo=document.getElementById('sel_interval_shout_dest').value;
+    }else{ intervalo=document.getElementById('select_intervalo').value; } 
+
     switch(tipo){
     case 'post_populares':
       if(intervalo!=''){
@@ -155,10 +175,15 @@ var obtener_datos=function(tipo){
       }else{ alert('Seleccione un valor'); post.innerHTML='Selecciona un valor'; }
     break;
 
+    case 'shouts_destacados':
+      if(intervalo!=''){
+        post.innerHTML='Cargando....';
+        taringa('http://api.taringa.net/shout/trends/view/'+intervalo+'?count=50',traer_shout,'post')
+      }else{ alert('Seleccione un valor'); post.innerHTML='Selecciona un valor'; }
+    break;    
+
   }
 }
-
-
 
 var traer_user=function(xhttp,div){  
   //obtiene los datos del usuario
