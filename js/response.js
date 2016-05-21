@@ -80,18 +80,95 @@ var traer_com=function(id_post,num_com,page){
       taringa("http://api.taringa.net/post/comment/view?object_id="+id_post+"&page="+page,function(xhttp,div){
         var r2=JSON.parse(xhttp.responseText);
 
-        var conta=0,com='';
+        var conta=0,com='',cuerpo_com='';
         var myfor=setInterval(function(){      
           if(conta<r2.length){
-            //comentario_padre
-            com=com+"<div style='font-size:13px;'><div><img src='"+r2[conta].owner.avatar.tiny+"' /><b><span style='cursor:pointer;color:blue;' onclick='taringa(\"http://api.taringa.net/user/nick/view/"+r2[conta].owner.nick+"\",traer_user,\"post\")'>"+r2[conta].owner.nick+":</span></b> <span style='color:green;'>+"+r2[conta].likes+"</span> <span style='color:red;''>-"+r2[conta].unlikes+"</span></div> <div>"+r2[conta].body+"</div></div><br>";
+            
+            //codigo para emoticones clasicos en los coments padre (no funca si hay dos emoticones sin espacio, ejemplo-> :roll::roll:)
+            cuerpo_com=r2[conta].body
+            var array_cuerpo_com=cuerpo_com.split(" ");
+            var res='';
+            for (var i = 0; i < array_cuerpo_com.length; i++) {
+              /*if(array_cuerpo_com[i].substring(0,5)=='[img='){//es una imagen
+                res+='<img src="'+array_cuerpo_com[i].substring(5,array_cuerpo_com[i].length-1)+'" />'; 
+                console.log(array_cuerpo_com[i].substring(5,array_cuerpo_com[i].length));
+              }*/
+              switch(array_cuerpo_com[i]){
+                case ':metal:': res+='<img src="http://o1.t26.net/img/emoticons/metal.gif" />'; break;
+                case ':)': res+='<img src="http://o1.t26.net/img/emoticons/smile.gif" /> '; break;
+                case ':F': res+='<img src="http://o1.t26.net/img/emoticons/drool.gif" /> '; break;
+                case ':roll:': res+='<img src="http://o1.t26.net/img/emoticons/wassat.gif" /> '; break;
+                case ':lala:': res+='<img src="http://o1.t26.net/img/emoticons/mobe.gif" /> '; break;
+                case ':grin:': res+='<img src="http://o1.t26.net/img/emoticons/grin.gif" /> '; break;
+                case ':alaba:': res+='<img src="http://o1.t26.net/img/emoticons/alabama.gif" /> '; break;
+                case ':lpmqtp:': res+='<img src="http://o1.t26.net/img/emoticons/lpmqtp.gif" /> '; break;
+                case ':noo:': res+='<img src="http://o1.t26.net/img/emoticons/sad2.gif" /> '; break;
+                case ":headbang:": res+='<img src="http://o1.t26.net/img/emoticons/bang.gif" /> '; break;
+                case ':idiot:': res+='<img src="http://o1.t26.net/img/emoticons/idiot.gif" /> '; break;
+                case ':zombie:': res+='<img src="http://o1.t26.net/img/emoticons/zombie.gif" /> '; break;
+                case ':cold:': res+='<img src="http://o1.t26.net/img/emoticons/cold.gif" /> '; break;
+                case 'X(': res+='<img src="http://o1.t26.net/img/emoticons/angry.gif" /> '; break;
+                case '^^': res+='<img src="http://o1.t26.net/img/emoticons/grn.gif" /> '; break;
+                case ':]': res+='<img src="http://o1.t26.net/img/emoticons/5.gif" /> '; break;
+                case ':oops:': res+='<img src="http://o1.t26.net/img/emoticons/red.gif" /> '; break;
+                case ':shrug:': res+='<img src="http://o1.t26.net/img/emoticons/oops.gif" /> '; break;
+                case ':RIP:': res+='<img src="http://o1.t26.net/img/emoticons/rip.gif" /> '; break;
+                case ':fantasma:': res+='<img src="http://o1.t26.net/img/emoticons/fantasma.gif" /> '; break;
+                case ':love:': res+='<img src="http://o1.t26.net/img/emoticons/love.gif" /> '; break;
+                default:
+                  res+=array_cuerpo_com[i]+' ';
+                break;
+              } 
+
+            };
+
+            //comentario_padre 
+            com=com+"<div style='font-size:13px;'><div><img src='"+r2[conta].owner.avatar.tiny+"' /><b><span style='cursor:pointer;color:blue;' onclick='taringa(\"http://api.taringa.net/user/nick/view/"+r2[conta].owner.nick+"\",traer_user,\"post\")'>"+r2[conta].owner.nick+":</span></b> <span style='color:green;'>+"+r2[conta].likes+"</span> <span style='color:red;''>-"+r2[conta].unlikes+"</span></div> <div>"+res+"</div></div><br>";
             
             //obtiene el reply de comentarios (los muestra al reves, hay un error en la api)
             taringa('http://api.taringa.net/post/comment/replies/view?comment_id='+r2[conta].id,function(xhttp,div){
               var r3=JSON.parse(xhttp.responseText); 
 
+                var cuerpo_com_child='';
+                var array_cuerpo_com_child=[];
+                var res='';//declaro
                 for (var j=0; j<r3.length; j++) {        
-                  com=com+'<div style="width:100%;background-color:white;margin-left:30px;color:gray;font-size:13px;"><div><img src="'+r3[j].owner.avatar.tiny+'" /><b><span style="cursor:pointer;color:#005dab;" onclick="taringa(\'http://api.taringa.net/user/nick/view/'+r3[j].owner.nick+'\',traer_user,\'post\')">'+r3[j].owner.nick+'</span></b>: <span style="color:green;">+'+r3[j].likes+'</span> <span style="color:red;">-'+r3[j].unlikes+'</span></div> <div>'+r3[j].body+'</div></div><br>';
+                  res='';//reseteo porque sino los comentarios hijo se van concatenando
+                  cuerpo_com_child=r3[j].body;
+                  array_cuerpo_com_child=cuerpo_com_child.split(" ");
+
+                  for (var h = 0; h < array_cuerpo_com_child.length; h++) {
+
+                    switch(array_cuerpo_com_child[h]){
+                        case ':metal:': res+='<img src="http://o1.t26.net/img/emoticons/metal.gif" />'; break;
+                        case ':)': res+='<img src="http://o1.t26.net/img/emoticons/smile.gif" /> '; break;
+                        case ':F': res+='<img src="http://o1.t26.net/img/emoticons/drool.gif" /> '; break;
+                        case ':roll:': res+='<img src="http://o1.t26.net/img/emoticons/wassat.gif" /> '; break;
+                        case ':lala:': res+='<img src="http://o1.t26.net/img/emoticons/mobe.gif" /> '; break;
+                        case ':grin:': res+='<img src="http://o1.t26.net/img/emoticons/grin.gif" /> '; break;
+                        case ':alaba:': res+='<img src="http://o1.t26.net/img/emoticons/alabama.gif" /> '; break;
+                        case ':lpmqtp:': res+='<img src="http://o1.t26.net/img/emoticons/lpmqtp.gif" /> '; break;
+                        case ':noo:': res+='<img src="http://o1.t26.net/img/emoticons/sad2.gif" /> '; break;
+                        case ":headbang:": res+='<img src="http://o1.t26.net/img/emoticons/bang.gif" /> '; break;
+                        case ':idiot:': res+='<img src="http://o1.t26.net/img/emoticons/idiot.gif" /> '; break;
+                        case ':zombie:': res+='<img src="http://o1.t26.net/img/emoticons/zombie.gif" /> '; break;
+                        case ':cold:': res+='<img src="http://o1.t26.net/img/emoticons/cold.gif" /> '; break;
+                        case 'X(': res+='<img src="http://o1.t26.net/img/emoticons/angry.gif" /> '; break;
+                        case '^^': res+='<img src="http://o1.t26.net/img/emoticons/grn.gif" /> '; break;
+                        case ':]': res+='<img src="http://o1.t26.net/img/emoticons/5.gif" /> '; break;
+                        case ':oops:': res+='<img src="http://o1.t26.net/img/emoticons/red.gif" /> '; break;
+                        case ':shrug:': res+='<img src="http://o1.t26.net/img/emoticons/oops.gif" /> '; break;
+                        case ':RIP:': res+='<img src="http://o1.t26.net/img/emoticons/rip.gif" /> '; break;
+                        case ':fantasma:': res+='<img src="http://o1.t26.net/img/emoticons/fantasma.gif" /> '; break;
+                        case ':love:': res+='<img src="http://o1.t26.net/img/emoticons/love.gif" /> '; break;
+                        default:
+                          res+=array_cuerpo_com_child[h]+' ';
+                        break;
+                    }
+
+                  };
+
+                  com=com+'<div style="width:100%;background-color:white;margin-left:30px;color:gray;font-size:13px;"><div><img src="'+r3[j].owner.avatar.tiny+'" /><b><span style="cursor:pointer;color:#005dab;" onclick="taringa(\'http://api.taringa.net/user/nick/view/'+r3[j].owner.nick+'\',traer_user,\'post\')">'+r3[j].owner.nick+'</span></b>: <span style="color:green;">+'+r3[j].likes+'</span> <span style="color:red;">-'+r3[j].unlikes+'</span></div> <div>'+res+'</div></div><br>';
                 } 
 
                 var text_page='';//muestra las páginas
@@ -331,10 +408,6 @@ taringa("http://api.taringa.net/shout/hashtags/view",traer_hashtag,'tendencia');
 var st3=setInterval(function(){
   taringa("http://api.taringa.net/shout/hashtags/view",traer_hashtag,'tendencia');
 },60000);
-
-
-//taringa('http://api.taringa.net/shout/trends/view/1h',traer_shout,'shout_destacados')
-//taringa('http://api.taringa.net/shout/populars/view/today',traer_shout,'shout_populares')
 
 
 //trae post con la busqueda realizada
