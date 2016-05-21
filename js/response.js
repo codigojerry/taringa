@@ -94,7 +94,7 @@ var traer_com=function(id_post,num_com,page){
                 console.log(array_cuerpo_com[i].substring(5,array_cuerpo_com[i].length));
               }*/
               switch(array_cuerpo_com[i]){
-                case ':metal:': res+='<img src="http://o1.t26.net/img/emoticons/metal.gif" />'; break;
+                case ':metal:': res+='<img src="http://o1.t26.net/img/emoticons/metal.gif" /> '; break;
                 case ':)': res+='<img src="http://o1.t26.net/img/emoticons/smile.gif" /> '; break;
                 case ':F': res+='<img src="http://o1.t26.net/img/emoticons/drool.gif" /> '; break;
                 case ':roll:': res+='<img src="http://o1.t26.net/img/emoticons/wassat.gif" /> '; break;
@@ -140,7 +140,7 @@ var traer_com=function(id_post,num_com,page){
                   for (var h = 0; h < array_cuerpo_com_child.length; h++) {
 
                     switch(array_cuerpo_com_child[h]){
-                        case ':metal:': res+='<img src="http://o1.t26.net/img/emoticons/metal.gif" />'; break;
+                        case ':metal:': res+='<img src="http://o1.t26.net/img/emoticons/metal.gif" /> '; break;
                         case ':)': res+='<img src="http://o1.t26.net/img/emoticons/smile.gif" /> '; break;
                         case ':F': res+='<img src="http://o1.t26.net/img/emoticons/drool.gif" /> '; break;
                         case ':roll:': res+='<img src="http://o1.t26.net/img/emoticons/wassat.gif" /> '; break;
@@ -349,10 +349,10 @@ var traer_followers=function(num_foll,id_user,pag){
 
 }
 
-//trae shouts nuevos cada 30 segundos
+//trae shouts nuevos cada 60 segundos
 var st2=setInterval(function(){
   taringa('http://api.taringa.net/shout/public/view?count=50',traer_shout,'shout');
-},30000);
+},60000);
 
 var traer_shout=function(xhttp,div){
 
